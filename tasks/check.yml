@@ -3,7 +3,7 @@
   block:
 
     - name: Strings from usr/lib/apache2/modules/mod_maxminddb.so
-      command: strings /usr/lib/apache2/modules/mod_maxminddb.so
+      shell: strings /usr/lib/apache2/modules/mod_maxminddb.so | grep /usr/local/src/mod_maxminddb
       register: modmaxminddb_so_strings
 
     - name: Set a fact for the version of MaxMind DB Apache Module installed
