@@ -3,6 +3,8 @@
   apt:
     pkg:
       - apache2-dev
+      - libmaxminddb-dev
+      - libmaxminddb0
       - libmmdb2-0
       - libmmdb2-dev
       - mmdb-bin
