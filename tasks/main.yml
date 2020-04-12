@@ -30,7 +30,7 @@
   command: ./configure
   args:
     chdir: "/usr/local/src/mod_maxminddb-{{ modmaxminddb_release }}"
-    creates: "/usr/local/src/mod_maxminddb-{{ modmaxminddb_release }}/config.log"
+    creates: "/usr/local/src/mod_maxminddb-{{ modmaxminddb_release }}/Makefile"
   tags:
     - modmaxminddb
 
