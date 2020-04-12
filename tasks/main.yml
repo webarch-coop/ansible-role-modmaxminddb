@@ -18,7 +18,7 @@
 - name: Source directory present
   file:
     path: "/usr/local/src/mod_maxminddb-{{ modmaxminddb_release }}"
-    state: directory:
+    state: directory
   tags:
     - modmaxminddb
 
