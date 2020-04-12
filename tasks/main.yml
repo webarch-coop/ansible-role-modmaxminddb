@@ -39,4 +39,6 @@
     chdir: "/usr/local/src/mod_maxminddb-{{ modmaxminddb_release }"
     target: install
   become: yes
+  tags:
+    - modmaxminddb
 ...
