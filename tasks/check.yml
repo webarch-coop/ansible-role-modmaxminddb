@@ -1,0 +1,19 @@
+---
+- name: Check which version of MaxMind DB Apache Module is present
+  block:
+
+    - name: Strings from usr/lib/apache2/modules/mod_maxminddb.so
+      command: strings /usr/lib/apache2/modules/mod_maxminddb.so
+      register: modmaxminddb_so_strings
+
+    - name: Set a fact for the version of MaxMind DB Apache Module installed
+      set_fact:
+        modmaxminddb_installed: "{{ string | regex_replace('^/usr/local/src/mod_maxminddb-') | regex_replace('/src$') }}"
+      when: ( "/usr/local/src/mod_maxminddb" in string )
+      loop: "{{ modmaxminddb_so_strings.stdout_lines }}"
+      loop_control:
+        loop_var: string
+
+  tags:
+    - modmaxminddb
+...
