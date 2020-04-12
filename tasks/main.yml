@@ -1,25 +1,39 @@
 ---
-- name: Packages present
+- name: MaxMind DB Apache Module required packages present
   apt:
     pkg:
+      - apache2-dev
       - libmmdb2-0
       - libmmdb2-dev
       - mmdb-bin
   tags:
     - modmaxminddb
 
-- name: Source code present
+- name: MaxMind DB Apache Module source code present
   get_url:
     url: "https://github.com/maxmind/mod_maxminddb/releases/download/{{ modmaxminddb_release }}/mod_maxminddb-{{ modmaxminddb_release }}.tar.gz"
     dest: "/usr/local/src/mod_maxminddb-{{ modmaxminddb_release }}.tar.gz"
   tags:
     - modmaxminddb
 
-- name: Source code unarchived
+- name: MaxMind DB Apache Module source code unarchived
   unarchive:
     src: "/usr/local/src/mod_maxminddb-{{ modmaxminddb_release }}.tar.gz"
     dest: "/usr/local/src/"
     remote_src: true
   tags:
     - modmaxminddb
+
+- name: Configure MaxMind DB Apache Module
+  command: ./configure
+  args:
+    creates: "/usr/local/src/mod_maxminddb-{{ modmaxminddb_release }}/config.log"
+  tags:
+    - modmaxminddb
+
+- name: Make MaxMind DB Apache Module
+  make:
+    chdir: "/usr/local/src/mod_maxminddb-{{ modmaxminddb_release }"
+    target: install
+  become: yes
 ...
