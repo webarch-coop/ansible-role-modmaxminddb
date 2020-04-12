@@ -13,6 +13,7 @@
       loop: "{{ modmaxminddb_so_strings.stdout_lines }}"
       loop_control:
         loop_var: string
+        label: "{{ string }}"
 
   tags:
     - modmaxminddb
