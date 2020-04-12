@@ -5,6 +5,7 @@
     - name: Strings from usr/lib/apache2/modules/mod_maxminddb.so
       shell: strings /usr/lib/apache2/modules/mod_maxminddb.so | grep /usr/local/src/mod_maxminddb
       register: modmaxminddb_so_strings
+      changed_when: modmaxminddb_version not in modmaxminddb_so_strings.stdout
 
     - name: Set a fact for the version of MaxMind DB Apache Module installed
       set_fact:
