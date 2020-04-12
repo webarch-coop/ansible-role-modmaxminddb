@@ -11,34 +11,57 @@
   tags:
     - modmaxminddb
 
-- name: MaxMind DB Apache Module source code present
-  get_url:
-    url: "https://github.com/maxmind/mod_maxminddb/releases/download/{{ modmaxminddb_release }}/mod_maxminddb-{{ modmaxminddb_release }}.tar.gz"
-    dest: "/usr/local/src/mod_maxminddb-{{ modmaxminddb_release }}.tar.gz"
+- name: Check if MaxMind DB Apache Module is present
+  stat:
+    path: /usr/lib/apache2/modules/mod_maxminddb.so
+  register: modmaxminddb_so
   tags:
     - modmaxminddb
 
-- name: MaxMind DB Apache Module source code unarchived
-  unarchive:
-    src: "/usr/local/src/mod_maxminddb-{{ modmaxminddb_release }}.tar.gz"
-    dest: "/usr/local/src/"
-    remote_src: true
+- name: Check which version of MaxMind DB Apache Module is present
+  block:
+
+    - name: Strings from usr/lib/apache2/modules/mod_maxminddb.so
+      command: strings /usr/lib/apache2/modules/mod_maxminddb.so
+      register: modmaxminddb_so_strings
+
+    - name: Set a fact for the version of MaxMind DB Apache Module installed
+      set_fact:
+        modmaxminddb_installed: "{{ string | regex_replace('^/usr/local/src/mod_maxminddb-') | regex_replace('/src$') }}"
+      when: ( "/usr/local/src/mod_maxminddb" in string )
+      loop: "{{ modmaxminddb_so_strings.stdout_lines }}"
+      loop_control:
+        loop_var: string
+
+  when: ( modmaxminddb_so is defined ) and ( modmaxminddb_so.stat.exists )
   tags:
     - modmaxminddb
 
-- name: Configure MaxMind DB Apache Module
-  command: ./configure
-  args:
-    chdir: "/usr/local/src/mod_maxminddb-{{ modmaxminddb_release }}"
-    creates: "/usr/local/src/mod_maxminddb-{{ modmaxminddb_release }}/Makefile"
-  tags:
-    - modmaxminddb
+- name: Download and install MaxMind DB Apache Module
+  block:
 
-- name: Make MaxMind DB Apache Module
-  make:
-    chdir: "/usr/local/src/mod_maxminddb-{{ modmaxminddb_release }}"
-    target: install
-  become: yes
-  tags:
-    - modmaxminddb
+    - name: MaxMind DB Apache Module source code present
+      get_url:
+        url: "https://github.com/maxmind/mod_maxminddb/releases/download/{{ modmaxminddb_release }}/mod_maxminddb-{{ modmaxminddb_release }}.tar.gz"
+        dest: "/usr/local/src/mod_maxminddb-{{ modmaxminddb_release }}.tar.gz"
+
+    - name: MaxMind DB Apache Module source code unarchived
+      unarchive:
+        src: "/usr/local/src/mod_maxminddb-{{ modmaxminddb_release }}.tar.gz"
+        dest: "/usr/local/src/"
+        remote_src: true
+
+    - name: Configure MaxMind DB Apache Module
+      command: ./configure
+      args:
+        chdir: "/usr/local/src/mod_maxminddb-{{ modmaxminddb_release }}"
+        creates: "/usr/local/src/mod_maxminddb-{{ modmaxminddb_release }}/Makefile"
+
+    - name: Make MaxMind DB Apache Module
+      make:
+        chdir: "/usr/local/src/mod_maxminddb-{{ modmaxminddb_release }}"
+        target: install
+      become: yes
+
+  when: modmaxminddb_installed != modmaxminddb_version
 ...
