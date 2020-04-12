@@ -64,4 +64,6 @@
       become: yes
 
   when: modmaxminddb_installed != modmaxminddb_version
+  tags:
+    - modmaxminddb
 ...
