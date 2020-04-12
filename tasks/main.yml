@@ -1,0 +1,32 @@
+---
+- name: Packages present
+  apt:
+    pkg:
+      - libmmdb2-0
+      - libmmdb2-dev
+      - mmdb-bin
+  tags:
+    - modmaxminddb 
+
+- name: Source code present
+  get_url:
+    url: "https://github.com/maxmind/mod_maxminddb/releases/download/{{ modmaxminddb_release }}/mod_maxminddb-{{ modmaxminddb_release }}.tar.gz"
+    dest: "/usr/local/src/mod_maxminddb-{{ modmaxminddb_release }}.tar.gz"
+  tags:
+    - modmaxminddb 
+
+- name: Source directory present
+  file:
+    path: "/usr/local/src/mod_maxminddb-{{ modmaxminddb_release }}"
+    state: directory:
+  tags:
+    - modmaxminddb
+
+- name: Source code unarchived
+  unarchive:
+    src: "/usr/local/src/mod_maxminddb-{{ modmaxminddb_release }}.tar.gz"
+    dest: "/usr/local/src/mod_maxminddb-{{ modmaxminddb_release }}"
+    remote_src: yes
+  tags:
+    - modmaxminddb
+...
