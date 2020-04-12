@@ -15,18 +15,11 @@
   tags:
     - modmaxminddb
 
-- name: Source directory present
-  file:
-    path: "/usr/local/src/mod_maxminddb-{{ modmaxminddb_release }}"
-    state: directory
-  tags:
-    - modmaxminddb
-
 - name: Source code unarchived
   unarchive:
     src: "/usr/local/src/mod_maxminddb-{{ modmaxminddb_release }}.tar.gz"
-    dest: "/usr/local/src/mod_maxminddb-{{ modmaxminddb_release }}"
-    remote_src: yes
+    dest: "/usr/local/src/"
+    remote_src: true
   tags:
     - modmaxminddb
 ...
