@@ -11,6 +11,11 @@
   tags:
     - modmaxminddb
 
+- name: Check the latest version of MaxMind DB Apache Module
+  include_tasks: latest.yml
+  tags:
+    - modmaxminddb
+
 - name: Check if MaxMind DB Apache Module is present
   stat:
     path: /usr/lib/apache2/modules/mod_maxminddb.so
@@ -21,11 +26,6 @@
 - name: Check which version of MaxMind DB Apache Module is present
   include_tasks: check.yml
   when: ( modmaxminddb_so is defined ) and ( modmaxminddb_so.stat.exists )
-  tags:
-    - modmaxminddb
-
-- name: Check the latest version of MaxMind DB Apache Module
-  include_tasks: latest.yml
   tags:
     - modmaxminddb
 
