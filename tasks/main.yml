@@ -24,9 +24,14 @@
   tags:
     - modmaxminddb
 
+- name: Check the latest version of MaxMind DB Apache Module
+  include_tasks: latest.yml
+  tags:
+    - modmaxminddb
+
 - name: Download and install MaxMind DB Apache Module
   include_tasks: install.yml
-  when: ( modmaxminddb_so is defined ) and ( modmaxminddb_so.stat.exists == False ) or ( modmaxminddb_installed is defined ) and ( modmaxminddb_installed != modmaxminddb_version )
+  when: ( modmaxminddb_so is defined ) and ( modmaxminddb_so.stat.exists == False ) or ( modmaxminddb_installed is defined ) and ( modmaxminddb_installed != modmaxminddb_latest )
   tags:
     - modmaxminddb
 ...

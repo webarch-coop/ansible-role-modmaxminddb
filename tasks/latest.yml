@@ -1,0 +1,29 @@
+---
+- name: Check the latest version of MaxMind DB Apache Module
+  block:
+
+    - name: Check the latest version of MaxMind DB Apache Module
+      uri:
+        url: https://github.com/maxmind/mod_maxminddb/releases/latest
+        method: HEAD
+        status_code: 302
+        follow_redirects: none
+      check_mode: false
+      changed_when: false
+      register: modmaxminddb_latest_headers
+
+    - name: Set a fact for the latest version of MaxMind DB Apache Module
+      set_fact:
+        modmaxminddb_latest: "{{ modmaxminddb_latest_headers.location | urlsplit('path') | basename | regex_replace('^v') }}"
+
+    - name: Debug veriables
+      debug:
+        msg:
+          - "modmaxminddb_installed: {{ modmaxminddb_installed }}"
+          - "modmaxminddb_latest: {{ modmaxminddb_latest }}"
+        verbosity: 1
+      when: modmaxminddb_installed != modmaxminddb_latest
+
+  tags:
+    - modmaxminddb
+...
