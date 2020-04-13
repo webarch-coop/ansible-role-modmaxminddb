@@ -12,3 +12,4 @@ which is currently 1.3, rather than the
 however if [this issue is resolved](https://github.com/maxmind/libmaxminddb/issues/225) 
 then perhaps Debian will package a newer version.
 
+See also the [geoipupdate role](https://git.coop/webarch/geoipupdate).
