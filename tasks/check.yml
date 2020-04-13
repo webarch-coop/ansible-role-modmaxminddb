@@ -16,6 +16,14 @@
         loop_var: string
         label: "{{ string }}"
 
+    - name: Debug veriables
+      debug:
+        msg:
+          - "modmaxminddb_installed: {{ modmaxminddb_installed }}"
+          - "modmaxminddb_latest: {{ modmaxminddb_latest }}"
+        verbosity: 1
+      when: modmaxminddb_installed != modmaxminddb_latest
+
   tags:
     - modmaxminddb
 ...

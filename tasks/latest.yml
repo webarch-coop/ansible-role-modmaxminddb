@@ -16,14 +16,6 @@
       set_fact:
         modmaxminddb_latest: "{{ modmaxminddb_latest_headers.location | urlsplit('path') | basename | regex_replace('^v') }}"
 
-    - name: Debug veriables
-      debug:
-        msg:
-          - "modmaxminddb_installed: {{ modmaxminddb_installed }}"
-          - "modmaxminddb_latest: {{ modmaxminddb_latest }}"
-        verbosity: 1
-      when: modmaxminddb_installed != modmaxminddb_latest
-
   tags:
     - modmaxminddb
 ...
