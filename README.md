@@ -29,7 +29,7 @@ Front page based on country:
   SetEnvIf MM_COUNTRY_CODE ^(GB|IM|JE|GG) MM_REDIRECT=uk
   # North America Homepage
   SetEnvIf MM_COUNTRY_CODE ^(US|MX|CA) MM_REDIRECT=na
-  <LocationMatch "/">
+  <LocationMatch "^/$">
     <If "-z %{ENV:MM_REDIRECT}">
       # Global Homepage
       Redirect "https://%{HTTP_HOST}/global/"
