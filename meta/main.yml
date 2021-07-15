@@ -1,6 +1,6 @@
 ---
 galaxy_info:
-  role_name: mod-maxminddb
+  role_name: modmaxminddb
   author: Chris Croome
   description: Ansible role for installing the Apache mod_maxminddb module
   company: Webarchitects Co-operative
