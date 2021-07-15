@@ -1,37 +1,33 @@
 ---
-- name: MaxMind DB Apache Module required packages present
-  apt:
-    pkg:
-      - apache2-dev
-      - libmaxminddb-dev
-      - libmaxminddb0
-      - libmmdb2-0
-      - libmmdb2-dev
-      - mmdb-bin
-  tags:
-    - modmaxminddb
+- name: Install and configure MaxMind DB Apache Module
+  block:
 
-- name: Check the latest version of MaxMind DB Apache Module
-  include_tasks: latest.yml
-  tags:
-    - modmaxminddb
+    - name: MaxMind DB Apache Module required packages present
+      apt:
+        pkg:
+          - apache2-dev
+          - libmaxminddb-dev
+          - libmaxminddb0
+          - libmmdb2-0
+          - libmmdb2-dev
+          - mmdb-bin
 
-- name: Check if MaxMind DB Apache Module is present
-  stat:
-    path: /usr/lib/apache2/modules/mod_maxminddb.so
-  register: modmaxminddb_so
-  tags:
-    - modmaxminddb
+    - name: Check the latest version of MaxMind DB Apache Module
+      include_tasks: latest.yml
 
-- name: Check which version of MaxMind DB Apache Module is present
-  include_tasks: check.yml
-  when: ( modmaxminddb_so is defined ) and ( modmaxminddb_so.stat.exists )
-  tags:
-    - modmaxminddb
+    - name: Check if MaxMind DB Apache Module is present
+      stat:
+        path: /usr/lib/apache2/modules/mod_maxminddb.so
+      register: modmaxminddb_so
 
-- name: Download and install MaxMind DB Apache Module
-  include_tasks: install.yml
-  when: ( modmaxminddb_so is defined ) and ( modmaxminddb_so.stat.exists == False ) or ( modmaxminddb_installed is defined ) and ( modmaxminddb_installed != modmaxminddb_latest )
+    - name: Check which version of MaxMind DB Apache Module is present
+      include_tasks: check.yml
+      when: ( modmaxminddb_so is defined ) and ( modmaxminddb_so.stat.exists )
+
+    - name: Download and install MaxMind DB Apache Module
+      include_tasks: install.yml
+      when: ( modmaxminddb_so is defined ) and ( not modmaxminddb_so.stat.exists ) or ( modmaxminddb_installed is defined ) and ( modmaxminddb_installed != modmaxminddb_latest )
+
   tags:
     - modmaxminddb
 ...

@@ -6,12 +6,17 @@
       get_url:
         url: "https://github.com/maxmind/mod_maxminddb/releases/download/{{ modmaxminddb_version }}/mod_maxminddb-{{ modmaxminddb_version }}.tar.gz"
         dest: "/usr/local/src/mod_maxminddb-{{ modmaxminddb_version }}.tar.gz"
+        owner: root
+        group: root
+        mode: 0640
 
     - name: MaxMind DB Apache Module source code unarchived
       unarchive:
         src: "/usr/local/src/mod_maxminddb-{{ modmaxminddb_version }}.tar.gz"
         dest: "/usr/local/src/"
         remote_src: true
+        owner: root
+        group: root
 
     - name: Configure MaxMind DB Apache Module
       command: ./configure
@@ -23,7 +28,6 @@
       make:
         chdir: "/usr/local/src/mod_maxminddb-{{ modmaxminddb_version }}"
         target: install
-      become: yes
 
   tags:
     - modmaxminddb
