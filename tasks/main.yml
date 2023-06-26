@@ -28,6 +28,7 @@
       ansible.builtin.apt:
         pkg:
           - apache2-dev
+          - automake
           - libmaxminddb-dev
           - libmaxminddb0
           - libmmdb2-0
