@@ -35,19 +35,19 @@
             owner: root
             group: root
 
-        - name: Edit make file for build bug https://github.com/maxmind/mod_maxminddb/issues/86
-          ansible.builtin.lineinfile:
-            path: "/usr/local/src/mod_maxminddb-{{ modmaxminddb_latest }}/Makefile.am"
-            line: '[[:whitespace:]]$(APXS) -c -Wl,"$(LDFLAGS) $(LIBMAXMINDDB_LDFLAGS)" $(LIBS) $(WC) $(APXS_LDFLAGS) mod_maxminddb.c'
-            regex: '^[[:whitespace:]][$][(]APXS[)]'
-            state: present
-            mode: "0644"
+        # - name: Edit make file for build bug https://github.com/maxmind/mod_maxminddb/issues/86
+        #   ansible.builtin.lineinfile:
+        #     path: "/usr/local/src/mod_maxminddb-{{ modmaxminddb_latest }}/Makefile.am"
+        #     line: '[[:whitespace:]]$(APXS) -c -Wl,"$(LDFLAGS) $(LIBMAXMINDDB_LDFLAGS)" $(LIBS) $(WC) $(APXS_LDFLAGS) mod_maxminddb.c'
+        #     regex: '^[[:whitespace:]][$][(]APXS[)]'
+        #     state: present
+        #     mode: "0644"
 
-        - name: Bootstrap MaxMind DB Apache Module
-          ansible.builtin.command: ./configure
-          args:
-            chdir: "/usr/local/src/mod_maxminddb-{{ modmaxminddb_latest }}"
-          changed_when: true
+        # - name: Bootstrap MaxMind DB Apache Module
+        #   ansible.builtin.command: ./bootstrap
+        #   args:
+        #     chdir: "/usr/local/src/mod_maxminddb-{{ modmaxminddb_latest }}"
+        #   changed_when: true
 
         - name: Configure MaxMind DB Apache Module
           ansible.builtin.command: ./configure
