@@ -37,7 +37,7 @@
 
         - name: Edit make file for build bug https://github.com/maxmind/mod_maxminddb/issues/86
           ansible.builtin.lineinfile:
-            path: /usr/local/src/Makefile.am
+            path: "/usr/local/src/mod_maxminddb-{{ modmaxminddb_latest }}/Makefile.am"
             line: '[[:whitespace:]]$(APXS) -c -Wl,"$(LDFLAGS) $(LIBMAXMINDDB_LDFLAGS)" $(LIBS) $(WC) $(APXS_LDFLAGS) mod_maxminddb.c'
             regex: '^[[:whitespace:]][$][(]APXS[)]'
             state: present
