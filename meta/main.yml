@@ -1,24 +1,34 @@
+# Copyright 2020-2023 Chris Croome
+#
+# This file is part of the Webarchitects MaxMind DB Apache Module Ansible role.
+#
+# The Webarchitects MaxMind DB Apache Module Ansible role is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+#
+# The Webarchitects MaxMind DB Apache Module Ansible role is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with the Webarchitects MaxMind DB Apache Module Ansible role. If not, see <https://www.gnu.org/licenses/>.
 ---
 galaxy_info:
   role_name: modmaxminddb
   author: Chris Croome
-  description: Ansible role for installing the Apache mod_maxminddb module
+  namespace: chriscroome
+  description: Ansible role for installing the Apache mod_maxminddb module.
   company: Webarchitects Co-operative
-  license: license (GPLv3)
-  min_ansible_version: 2.9
+  license: GNU General Public License v3.0 (GPLv3)
+  min_ansible_version: "2.14.3"
   platforms:
-    - name: debian
+    - name: Debian
       versions:
+        - bookworm
         - bullseye
         - buster
-  galaxy_tags: []
-  # List tags for your role here, one per line. A tag is a keyword that describes
-  # and categorizes the role. Users find roles by searching for tags. Be sure to
-  # remove the '[]' above, if you add tags to this list.
-  #
-  # NOTE: A tag is limited to a single word comprised of alphanumeric characters.
-  #       Maximum 20 tags per role.
+    - name: Ubuntu
+      versions:
+        - jammy
+  galaxy_tags:
+    - apache
+    - debian
+    - modmaxminddb
+    - ubuntu
 dependencies: []
-# List your role dependencies here, one per line. Be sure to remove the '[]' above,
-# if you add dependencies to this list.
 ...

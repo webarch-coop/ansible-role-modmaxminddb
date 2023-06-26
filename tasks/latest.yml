@@ -1,9 +1,18 @@
+# Copyright 2020-2023 Chris Croome
+#
+# This file is part of the Webarchitects MaxMind DB Apache Module Ansible role.
+#
+# The Webarchitects MaxMind DB Apache Module Ansible role is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+#
+# The Webarchitects MaxMind DB Apache Module Ansible role is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with the Webarchitects MaxMind DB Apache Module Ansible role. If not, see <https://www.gnu.org/licenses/>.
 ---
 - name: Check the latest version of MaxMind DB Apache Module
   block:
 
     - name: Check the latest version of MaxMind DB Apache Module
-      uri:
+      ansible.builtin.uri:
         url: https://github.com/maxmind/mod_maxminddb/releases/latest
         method: HEAD
         status_code: 302
@@ -13,7 +22,7 @@
       register: modmaxminddb_latest_headers
 
     - name: Set a fact for the latest version of MaxMind DB Apache Module
-      set_fact:
+      ansible.builtin.set_fact:
         modmaxminddb_latest: "{{ modmaxminddb_latest_headers.location | urlsplit('path') | basename | regex_replace('^v') }}"
 
   tags:

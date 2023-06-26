@@ -8,18 +8,21 @@
 #
 # You should have received a copy of the GNU General Public License along with the Webarchitects MaxMind DB Apache Module Ansible role. If not, see <https://www.gnu.org/licenses/>.
 ---
-extends: default
-yaml-files:
-  - '*.yaml'
-  - '*.yml'
-rules:
-  braces:
-    max-spaces-inside: 1
-    level: error
-  brackets:
-    max-spaces-inside: 1
-    level: error
-  line-length: disable
-  comments-indentation: disable
-# vim: syntax=yaml
+- name: Verify as root
+  become: true
+  connection: local
+  gather_facts: true
+  hosts:
+    - localhost
+  tasks:
+
+    - name: Check Apache module
+      ansible.builtin.command: a2query -m modmaxminddb
+      check_mode: false
+      changed_when: false
+      register: molecule_a2query_modmaxminddb
+
+    - name: Debug Apache module check
+      ansible.builtin.debug:
+        var: molecule_a2query_modmaxminddb.stdout
 ...

@@ -1,9 +1,31 @@
+# Copyright 2020-2023 Chris Croome
+#
+# This file is part of the Webarchitects MaxMind DB Apache Module Ansible role.
+#
+# The Webarchitects MaxMind DB Apache Module Ansible role is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+#
+# The Webarchitects MaxMind DB Apache Module Ansible role is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with the Webarchitects MaxMind DB Apache Module Ansible role. If not, see <https://www.gnu.org/licenses/>.
 ---
+- name: Skip the tasks in this role as modmaxminddb is false
+  ansible.builtin.debug:
+    msg: "The modmaxminddb variable need to be true for the tasks in this role to run."
+  when: not modmaxminddb | bool
+  tags:
+    - modmaxminddb
+
 - name: Install and configure MaxMind DB Apache Module
   block:
 
+    - name: Include apt role local fact tasks if variables are not defined
+      ansible.builtin.include_role:
+        name: apt
+        tasks_from: local_facts.yml
+      when: ansible_local.bash.path is not defined
+
     - name: MaxMind DB Apache Module required packages present
-      apt:
+      ansible.builtin.apt:
         pkg:
           - apache2-dev
           - libmaxminddb-dev
@@ -11,23 +33,32 @@
           - libmmdb2-0
           - libmmdb2-dev
           - mmdb-bin
+        update_cache: true
+        state: present
 
     - name: Check the latest version of MaxMind DB Apache Module
-      include_tasks: latest.yml
+      ansible.builtin.include_tasks: latest.yml
 
     - name: Check if MaxMind DB Apache Module is present
-      stat:
+      ansible.builtin.stat:
         path: /usr/lib/apache2/modules/mod_maxminddb.so
       register: modmaxminddb_so
 
     - name: Check which version of MaxMind DB Apache Module is present
-      include_tasks: check.yml
-      when: ( modmaxminddb_so is defined ) and ( modmaxminddb_so.stat.exists )
+      ansible.builtin.include_tasks: check.yml
+      when:
+        - modmaxminddb_so is defined
+        - modmaxminddb_so.stat.exists | bool
 
     - name: Download and install MaxMind DB Apache Module
-      include_tasks: install.yml
-      when: ( modmaxminddb_so is defined ) and ( not modmaxminddb_so.stat.exists ) or ( modmaxminddb_installed is defined ) and ( modmaxminddb_installed != modmaxminddb_latest )
+      ansible.builtin.include_tasks: install.yml
+      when: >-
+        ( ( modmaxminddb_so is defined ) and
+        ( not modmaxminddb_so.stat.exists ) ) or
+        ( ( modmaxminddb_installed is defined ) and
+        ( modmaxminddb_installed != modmaxminddb_latest ) )
 
+  when: modmaxminddb | bool
   tags:
     - modmaxminddb
 ...

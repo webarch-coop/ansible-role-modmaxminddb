@@ -1,33 +1,52 @@
+# Copyright 2020-2023 Chris Croome
+#
+# This file is part of the Webarchitects MaxMind DB Apache Module Ansible role.
+#
+# The Webarchitects MaxMind DB Apache Module Ansible role is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+#
+# The Webarchitects MaxMind DB Apache Module Ansible role is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with the Webarchitects MaxMind DB Apache Module Ansible role. If not, see <https://www.gnu.org/licenses/>.
 ---
 - name: Download and install MaxMind DB Apache Module
   block:
 
     - name: MaxMind DB Apache Module source code present
-      get_url:
+      ansible.builtin.get_url:
         url: "https://github.com/maxmind/mod_maxminddb/releases/download/{{ modmaxminddb_version }}/mod_maxminddb-{{ modmaxminddb_version }}.tar.gz"
         dest: "/usr/local/src/mod_maxminddb-{{ modmaxminddb_version }}.tar.gz"
         owner: root
         group: root
-        mode: 0640
+        mode: "0640"
 
-    - name: MaxMind DB Apache Module source code unarchived
-      unarchive:
-        src: "/usr/local/src/mod_maxminddb-{{ modmaxminddb_version }}.tar.gz"
-        dest: "/usr/local/src/"
-        remote_src: true
-        owner: root
-        group: root
+    - name: Stat MaxMind DB Apache Module source code
+      ansible.builtin.stat:
+        path: "/usr/local/src/mod_maxminddb-{{ modmaxminddb_version }}.tar.gz"
+      register: modmaxminddb_src
 
-    - name: Configure MaxMind DB Apache Module
-      command: ./configure
-      args:
-        chdir: "/usr/local/src/mod_maxminddb-{{ modmaxminddb_version }}"
-        creates: "/usr/local/src/mod_maxminddb-{{ modmaxminddb_version }}/Makefile"
+    - name: Unarchive, compile and install
+      block:
 
-    - name: Make MaxMind DB Apache Module
-      make:
-        chdir: "/usr/local/src/mod_maxminddb-{{ modmaxminddb_version }}"
-        target: install
+        - name: MaxMind DB Apache Module source code unarchived
+          ansible.builtin.unarchive:
+            src: "/usr/local/src/mod_maxminddb-{{ modmaxminddb_version }}.tar.gz"
+            dest: "/usr/local/src/"
+            remote_src: true
+            owner: root
+            group: root
+
+        - name: Configure MaxMind DB Apache Module
+          ansible.builtin.command: ./configure
+          args:
+            chdir: "/usr/local/src/mod_maxminddb-{{ modmaxminddb_version }}"
+            creates: "/usr/local/src/mod_maxminddb-{{ modmaxminddb_version }}/Makefile"
+
+        - name: Make MaxMind DB Apache Module
+          community.general.make:
+            chdir: "/usr/local/src/mod_maxminddb-{{ modmaxminddb_version }}"
+            target: install
+
+      when: modmaxminddb_src.stat.exists | bool
 
   tags:
     - modmaxminddb

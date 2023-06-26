@@ -8,18 +8,12 @@
 #
 # You should have received a copy of the GNU General Public License along with the Webarchitects MaxMind DB Apache Module Ansible role. If not, see <https://www.gnu.org/licenses/>.
 ---
-extends: default
-yaml-files:
-  - '*.yaml'
-  - '*.yml'
-rules:
-  braces:
-    max-spaces-inside: 1
-    level: error
-  brackets:
-    max-spaces-inside: 1
-    level: error
-  line-length: disable
-  comments-indentation: disable
-# vim: syntax=yaml
+argument_specs:
+  main:
+    short_description: The main entry point for the modmaxminddb role.
+    options:
+      modmaxminddb:
+        type: bool
+        required: true
+        description: Run the tasks in this role.
 ...
