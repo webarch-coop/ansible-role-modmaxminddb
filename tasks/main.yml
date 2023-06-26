@@ -27,6 +27,7 @@
     - name: MaxMind DB Apache Module required packages present
       ansible.builtin.apt:
         pkg:
+          - apache2
           - apache2-dev
           - automake
           - libmaxminddb-dev
