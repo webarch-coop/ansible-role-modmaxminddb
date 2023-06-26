@@ -11,7 +11,7 @@
 - name: Check the latest version of MaxMind DB Apache Module
   block:
 
-    - name: Check the latest version of MaxMind DB Apache Module
+    - name: Check the latest version of the MaxMind DB Apache Module
       ansible.builtin.uri:
         url: https://github.com/maxmind/mod_maxminddb/releases/latest
         method: HEAD
@@ -21,9 +21,13 @@
       changed_when: false
       register: modmaxminddb_latest_headers
 
-    - name: Set a fact for the latest version of MaxMind DB Apache Module
+    - name: Set a fact for the latest version of the MaxMind DB Apache Module
       ansible.builtin.set_fact:
         modmaxminddb_latest: "{{ modmaxminddb_latest_headers.location | urlsplit('path') | basename | regex_replace('^v') }}"
+
+    - name: Debug the latest version of the MaxMind DB Apache Module
+      ansible.builtin.debug:
+        var: modmaxminddb_latest
 
   tags:
     - modmaxminddb
