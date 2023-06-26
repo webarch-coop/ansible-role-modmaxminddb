@@ -1,4 +1,4 @@
-# Webarchitects MaxMind DB Apache Module Ansible rolei
+# Webarchitects MaxMind DB Apache Module Ansible role
 
 An Ansible role to download, compile and install the [latest
 version](https://github.com/maxmind/mod_maxminddb/releases) of [MaxMind DB
