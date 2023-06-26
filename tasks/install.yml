@@ -13,15 +13,15 @@
 
     - name: MaxMind DB Apache Module source code present
       ansible.builtin.get_url:
-        url: "https://github.com/maxmind/mod_maxminddb/releases/download/{{ modmaxminddb_version }}/mod_maxminddb-{{ modmaxminddb_version }}.tar.gz"
-        dest: "/usr/local/src/mod_maxminddb-{{ modmaxminddb_version }}.tar.gz"
+        url: "https://github.com/maxmind/mod_maxminddb/releases/download/{{ modmaxminddb_latest }}/mod_maxminddb-{{ modmaxminddb_latest }}.tar.gz"
+        dest: "/usr/local/src/mod_maxminddb-{{ modmaxminddb_latest }}.tar.gz"
         owner: root
         group: root
         mode: "0640"
 
     - name: Stat MaxMind DB Apache Module source code
       ansible.builtin.stat:
-        path: "/usr/local/src/mod_maxminddb-{{ modmaxminddb_version }}.tar.gz"
+        path: "/usr/local/src/mod_maxminddb-{{ modmaxminddb_latest }}.tar.gz"
       register: modmaxminddb_src
 
     - name: Unarchive, compile and install
@@ -29,7 +29,7 @@
 
         - name: MaxMind DB Apache Module source code unarchived
           ansible.builtin.unarchive:
-            src: "/usr/local/src/mod_maxminddb-{{ modmaxminddb_version }}.tar.gz"
+            src: "/usr/local/src/mod_maxminddb-{{ modmaxminddb_latest }}.tar.gz"
             dest: "/usr/local/src/"
             remote_src: true
             owner: root
@@ -38,12 +38,12 @@
         - name: Configure MaxMind DB Apache Module
           ansible.builtin.command: ./configure
           args:
-            chdir: "/usr/local/src/mod_maxminddb-{{ modmaxminddb_version }}"
-            creates: "/usr/local/src/mod_maxminddb-{{ modmaxminddb_version }}/Makefile"
+            chdir: "/usr/local/src/mod_maxminddb-{{ modmaxminddb_latest }}"
+            creates: "/usr/local/src/mod_maxminddb-{{ modmaxminddb_latest }}/Makefile"
 
         - name: Make MaxMind DB Apache Module
           community.general.make:
-            chdir: "/usr/local/src/mod_maxminddb-{{ modmaxminddb_version }}"
+            chdir: "/usr/local/src/mod_maxminddb-{{ modmaxminddb_latest }}"
             target: install
 
       when: modmaxminddb_src.stat.exists | bool
