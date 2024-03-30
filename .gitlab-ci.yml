@@ -32,7 +32,7 @@ stages:
   - bookworm
   # - bullseye
   - jammy
-  - noble
+  # - noble
   - trixie
 bookworm:
   image: registry.git.coop/webarch/containers/images/bookworm:20240326
@@ -49,11 +49,11 @@ jammy:
   stage: jammy
   script:
     - molecule test
-noble:
-  image: registry.git.coop/webarch/containers/images/noble:20240326
-  stage: noble
-  script:
-    - molecule test
+# noble:
+#   image: registry.git.coop/webarch/containers/images/noble:20240326
+#   stage: noble
+#   script:
+#     - molecule test
 trixie:
   image: registry.git.coop/webarch/containers/images/trixie:20240326
   stage: trixie
