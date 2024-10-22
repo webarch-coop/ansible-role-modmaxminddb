@@ -22,7 +22,7 @@
       ansible.builtin.include_role:
         name: apt
         tasks_from: local_facts.yml
-      when: ansible_local.bash.path is not defined
+      when: ansible_facts.ansible_local.bash.path is not defined
 
     - name: MaxMind DB Apache Module required packages present
       ansible.builtin.apt:

@@ -16,7 +16,7 @@
         set -e -o pipefail
         strings /usr/lib/apache2/modules/mod_maxminddb.so | grep /usr/local/src/mod_maxminddb
       args:
-        executable: "{{ ansible_local.bash.path }}"
+        executable: "{{  ansible_facts.ansible_local.bash.path }}"
       check_mode: false
       changed_when: false
       register: modmaxminddb_so_strings
