@@ -1,4 +1,4 @@
-# Copyright 2020-2024 Chris Croome
+# Copyright 2020-2025 Chris Croome
 #
 # This file is part of the Webarchitects MaxMind DB Apache Module Ansible role.
 #
@@ -10,6 +10,6 @@
 ---
 - name: apt
   src: https://git.coop/webarch/apt.git
-  version: 4.7.0  # apt
+  version: 4.8.1  # apt
   scm: git
 ...
